@@ -10,10 +10,12 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "external-service.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
+{{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+  {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
   {{- end }}
+{{- end }}
 spec:
 {{- range .Values.ports }}
 {{- if .ingress.tls }}
